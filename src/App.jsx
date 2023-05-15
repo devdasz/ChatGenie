@@ -24,7 +24,7 @@ export default function App() {
       )
     );
 
-    let path='https://apitest.devdazz.repl.co/chatbot'
+    let path='https://apitest.devdazz.repl.co/uitest'
     
    const response = await axios.post(path, data)
     console.log(response.data)
