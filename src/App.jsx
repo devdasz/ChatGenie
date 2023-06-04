@@ -1,5 +1,6 @@
 import './App.css'
 import {Message, AIMessage} from './componenets/message.jsx'
+import React from "react"
 import { useState,useEffect } from "react";
 import axios from 'axios';
 const messages =  [  
@@ -10,6 +11,10 @@ const messages =  [
 export default function App() {
   const [messageList,setMessageList]=useState([])
  const [input,setInput]=useState()
+ const lastMessageRef = React.useRef(null);
+ React.useEffect(()=>{
+  lastMessageRef.current?.scrollIntoView();
+    }),[messageList];
 
 
   const handleSubmit=async()=>{
@@ -55,6 +60,7 @@ export default function App() {
       :""}
      
         </>))}
+        <div ref={lastMessageRef} ></div>
       
         </div>
 
