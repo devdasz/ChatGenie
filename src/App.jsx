@@ -1,81 +1,103 @@
 import './App.css'
-import {Message, AIMessage} from './componenets/message.jsx'
+import { Message, AIMessage } from './componenets/message.jsx'
 import React from "react"
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
-const messages =  [  
-    
-{'role':'user', 'content':'tell me a joke'},   
-{'role':'assistant', 'content':'Why did the chicken cross the road'},   
-{'role':'user', 'content':'I don\'t know'}  ]
+import { AppRouter, SetAppRouter } from './utils/AppRouter';
+import ChatPage from './ChatPage';
+const messages = [
+
+  { 'role': 'user', 'content': 'tell me a joke' },
+  { 'role': 'assistant', 'content': 'Why did the chicken cross the road' },
+  { 'role': 'user', 'content': 'I don\'t know' }]
+
+
+// Component Objects 
+const components = {
+  PIZZABOT: PizzaBot,
+  UITEST: UiTest,
+  NOTFOUND: NotFound,
+  DEFAULT: Home,
+  CHATMENU: ChatMenu
+};
+
+
 export default function App() {
-  const [messageList,setMessageList]=useState([])
- const [input,setInput]=useState()
- const lastMessageRef = React.useRef(null);
- React.useEffect(()=>{
-  lastMessageRef.current?.scrollIntoView();
-    }),[messageList];
+  return (<AppRouter components={components} />);
+}
 
 
-  const handleSubmit=async()=>{
-    
-   var data = {
-     role:"user",
-     content:input
-   };
-    setMessageList(
-      (preArray)=>(
-        [...preArray,data]
-      )
-    );
 
-    let path='https://apitest.devdazz.repl.co/chatbot'
-    
-   const response = await axios.post(path, data)
-    console.log(response.data)
-    
-   
-    setMessageList((preArray)=>(
-      [...preArray,response.data ]
-    ))
-
-  }
-
-  useEffect(()=>{
-    // getMeassage()
-  },[])
+export function NotFound() {
   return (
-    <main className='flex flex-col h-screen max-h-screen' style={{paddingBottom:"50px"}}>
-      <div className='grow  [overflow-anchor:none] max-h-[80vh] overflow-auto' >
-      {
-      messageList.map((ele)=>(
-      <>
-      {ele.role=="user"?
-     <Message message={ele.content} />
-      
-      :""}
-         {ele.role=="assistant"?
-     <AIMessage message={ele.content}/>
-      
-      :""}
-     
-        </>))}
-        <div ref={lastMessageRef} ></div>
-      
-        </div>
-
-<label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
-<div class="flex items-center bottom-0 left-0 right-0 p-4 bg-white">
-  <input type="text" class="grow bg-white border border-gray-400 rounded-l-lg px-4 py-2 w-3/4 focus:outline-none focus:shadow-outline" placeholder="Enter your text here" value={input}
-  onChange={(event)=>{
-    setInput(event.target.value)
-  }}/>
-  <button  onClick={handleSubmit} class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-r-lg px-6 py-2 ml-2" type="submit">Send</button>
-</div>
-
-      
-
-
-    </main>
+    <div>NotFound</div>
   )
 }
+
+export function ChatMenu() {
+  return (
+    <>
+      <div>ChatMenu</div>
+      <button type="button" onClick={() => SetAppRouter("PIZZABOT")}>Pizzabot</button>
+      <button type="button" onClick={() => SetAppRouter("UITEST")}>UiTest</button>
+    </>
+  )
+}
+
+
+export function PizzaBot() {
+  return (
+    <ChatPage chatEndpoint={"chatbot"} />
+  )
+}
+export function UiTest() {
+  return (
+    <ChatPage chatEndpoint={"uitest"} />
+  )
+}
+
+
+
+export function Home() {
+  return (
+    <>
+      <div className='min-h-screen bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-900 via-gray-100 to-gray-900'>
+        <div className='p-4 md:p-8'>
+        <p className='text-2xl font-bold text-white '>
+          ChatGenie
+        </p>
+        </div>
+        
+       <div className='grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-14'>
+        <div></div>
+        <div>
+        <div className='w-fit p-9    bg-[#d9d9d9b3] shadow-landing'>
+          <p className='font-extrabold text-[44px] leading-[70px]'>
+
+            Meet the
+          </p>
+          <p className='font-extrabold text-[44px] leading-[70px]'>
+
+            possibilities
+          </p>
+          <p className='font-extrabold text-[44px] leading-[70px]'>
+
+            of AI Chatbot
+          </p>
+          <p className='mt-8 text-base font-semibold tracking-widest ml-11'>Powered by OPENAI</p>
+        </div>
+        <button type="button" class="w-full md:w-96 md:ml-10 mt-8 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" onClick={() => SetAppRouter("CHATMENU")}>Chat Now</button>
+       
+        </div>
+     
+       </div>
+       
+
+      </div>
+
+    </>
+  )
+}
+
+
+

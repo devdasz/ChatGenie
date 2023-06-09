@@ -4,7 +4,11 @@ export default {
     './src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      boxShadow:{
+        "landing": "0px 4px 32px 21px rgba(133, 137, 146, 0.39)"
+      }
+    },
   },
   plugins: [],
 }
